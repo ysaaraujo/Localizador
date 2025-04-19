@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Localização do Usuário</title>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+        margin-top: 20px; Ju
+      }
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sua Localização Atual</h1>
+    <p id="location">Obtendo localização...</p>
+    <div id="map"></div>
+
+    <script>
+      let map;
+
+      function initMap(lat, lng) {
+        const location = { lat, lng };
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: location,
+          zoom: 15,
+        });
+
+        new google.maps.Marker({
+          position: location,
+          map: map,
+        });
+      }
+
+      function getUserLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              document.getElementById("location").textContent = `Latitude: ${lat}, Longitude: ${lng}`;
+              initMap(lat, lng);
+            },
+            (error) => {
+              document.getElementById("location").textContent = "Erro ao obter localização.";
+              console.error(error);
+            }
+          );
+        } else {
+          document.getElementById("location").textContent = "Geolocalização não é suportada pelo seu navegador.";
+        }
+      }
+
+      getUserLocation();
+    </script>
+
+    <!-- Substitua SUA_CHAVE_AQUI pela sua chave da API do Google Maps -->
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=SUA_CHAVE_AQUI">
+    </script>
+  </body>
+</html>
